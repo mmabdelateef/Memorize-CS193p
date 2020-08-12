@@ -11,15 +11,12 @@ import SwiftUI
 struct EmojiMemoryGameView: View {
    @ObservedObject var viewModel: EmojiMemoryGame
     var body: some View {
-        HStack {
-            ForEach(viewModel.cards) { card in
-                CardView(card: card).onTapGesture {
-                    self.viewModel.choose(card: card)
-                }
+        Grid(viewModel.cards) { card in
+            CardView(card: card).onTapGesture {
+                self.viewModel.choose(card: card)
             }
         }
         .foregroundColor(.orange)
-        .padding()
     }
 }
 
@@ -32,19 +29,21 @@ struct CardView: View {
                     RoundedRectangle(cornerRadius: cornerRadius).foregroundColor(.white)
                     RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: edgeLineWidth)
                     Text(card.content)
-                } else {
+                } else if !card.isMatched{
                     RoundedRectangle(cornerRadius: cornerRadius)
                 }
             }
-            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fit)
+//            .aspectRatio(CGSize(width: 1, height: 2), contentMode: .fit)
             .font(Font.system(size: min(geometry.size.width, geometry.size.height) * fontScaleFactor))
+            .padding()
+
         }
     }
 
     // MARK: - Drawing constants
     let cornerRadius: CGFloat = 10
     let edgeLineWidth: CGFloat = 3
-    let fontScaleFactor: CGFloat = 0.75
+    let fontScaleFactor: CGFloat = 0.5
 }
 
 struct ContentView_Previews: PreviewProvider {

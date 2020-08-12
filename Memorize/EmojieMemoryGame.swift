@@ -17,7 +17,7 @@ class EmojiMemoryGame: ObservableObject {
 //        }
 //    }
 
-    private static func createRandomPairs(min: Int = 2, max: Int = 4) -> [String] {
+    private static func createRandomPairs(min: Int = 4, max: Int = 6) -> [String] {
         let count = Int.random(in: min...max)
         let emojisSet = ["👻", "🧐", "🤪", "🤨", "😳", "😬", "🤗", "🥱", "🎃", "😼"].shuffled()
         return Array(emojisSet[0..<count])
