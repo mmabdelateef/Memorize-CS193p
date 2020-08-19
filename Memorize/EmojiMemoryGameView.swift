@@ -35,17 +35,11 @@ struct CardView: View {
     var card: MemoryGame<String>.Card
     var body: some View {
         GeometryReader { geometry in
-            ZStack { // combiner view
-                if card.isFaceUp {
-                    RoundedRectangle(cornerRadius: cornerRadius).foregroundColor(.white)
-                    RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: edgeLineWidth)
-                    Text(card.content)
-                } else if !card.isMatched{
-                    RoundedRectangle(cornerRadius: cornerRadius)
-                }
+            if !card.isMatched {
+                Text(card.content).cardify(isFaceUp: card.isFaceUp)
+                .font(Font.system(size: min(geometry.size.width, geometry.size.height) * fontScaleFactor))
+                .padding()
             }
-            .font(Font.system(size: min(geometry.size.width, geometry.size.height) * fontScaleFactor))
-            .padding()
         }
     }
 
@@ -57,6 +51,14 @@ struct CardView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        EmojiMemoryGameView(viewModel: EmojiMemoryGame())
+        let vm = EmojiMemoryGame()
+        vm.choose(card: vm.cards.first!)
+        return EmojiMemoryGameView(viewModel: vm)
+    }
+}
+
+extension View {
+    func cardify(isFaceUp: Bool) -> some View {
+        self.modifier(Cardify(isFaceUp: isFaceUp))
     }
 }
