@@ -16,16 +16,22 @@ struct EmojiMemoryGameView: View {
                 Text("Score: \(viewModel.model.score)")
                 Spacer()
                 Button("New Game") {
-                    viewModel.newGame()
+                    withAnimation {
+                        viewModel.newGame()
+                    }
                 }
             }.padding()
             Text(viewModel.selectedTheme.name)
                 .font(Font.largeTitle)
+                .transition(.identity)
             Grid(viewModel.cards) { card in
-                CardView(card: card).onTapGesture {
-                    self.viewModel.choose(card: card)
+                CardView(card: card)
+                    .onTapGesture {
+                    withAnimation(.linear(duration:2)) {
+                        self.viewModel.choose(card: card)
+                    }
                 }
-            }.animation(.easeInOut)
+            }
             .foregroundColor(viewModel.selectedTheme.color)
         }
     }
@@ -35,10 +41,17 @@ struct CardView: View {
     var card: MemoryGame<String>.Card
     var body: some View {
         GeometryReader { geometry in
-            if !card.isMatched {
-                Text(card.content).cardify(isFaceUp: card.isFaceUp)
-                .font(Font.system(size: min(geometry.size.width, geometry.size.height) * fontScaleFactor))
-                .padding()
+            if card.isFaceUp || !card.isMatched {
+                ZStack {
+                    Pie(startAngle: Angle.degrees(0 - 90),
+                        endAngle: Angle.degrees(110 - 90))
+                        .padding(5)
+                        .opacity(0.4)
+                    Text(card.content)
+                        .font(Font.system(size: min(geometry.size.width, geometry.size.height) * fontScaleFactor))
+                }
+                .cardify(isFaceUp: card.isFaceUp)
+                .transition(.scale)
             }
         }
     }
