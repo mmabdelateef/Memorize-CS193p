@@ -25,7 +25,7 @@ struct EmojiMemoryGameView: View {
                 CardView(card: card).onTapGesture {
                     self.viewModel.choose(card: card)
                 }
-            }
+            }.animation(.easeInOut)
             .foregroundColor(viewModel.selectedTheme.color)
         }
     }
@@ -44,8 +44,6 @@ struct CardView: View {
     }
 
     // MARK: - Drawing constants
-    let cornerRadius: CGFloat = 10
-    let edgeLineWidth: CGFloat = 3
     let fontScaleFactor: CGFloat = 0.5
 }
 
@@ -53,7 +51,9 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = EmojiMemoryGame()
         vm.choose(card: vm.cards.first!)
-        return EmojiMemoryGameView(viewModel: vm)
+        return Group {
+            EmojiMemoryGameView(viewModel: vm)
+        }
     }
 }
 
