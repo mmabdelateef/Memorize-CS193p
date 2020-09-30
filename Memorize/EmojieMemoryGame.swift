@@ -18,19 +18,15 @@ class EmojiMemoryGame: ObservableObject {
 //        }
 //    }
 
-    private let themes: [Theme] = [
-        Theme(name: "Smilies", emojis: ["🧐", "🤪", "🤨", "😳", "😬", "🤗", "🥱"], color: Color.yellow),
-        Theme(name: "Sea", emojis: ["🐙", "🐳", "🦑", "🦐", "🦈", "🦀", "🐠", "🐡"], color: Color.blue),
-        Theme(name: "Animals", emojis: ["🦒", "🦏", "🐫", "🦓", "🐆", "🐅", "🐘", "🦍", "🐃"], color: Color.black),
-        Theme(name: "Plants", emojis: ["🌲", "🌾", "🌴", "🌳", "🍀", "🌵", "🎋", "🌿"], color: Color.green),
-    ]
-
     private static func createRandomPairs(min: Int = 4, max: Int = 6, from emojis: [String]) -> [String] {
         let count = Int.random(in: min...max)
         return Array(emojis[0..<count])
     }
 
-    init() {
+    private let themes: [Theme]
+
+    init(themes: [Theme]) {
+        self.themes = themes
         newGame()
     }
 
@@ -53,7 +49,8 @@ class EmojiMemoryGame: ObservableObject {
     }
 }
 
-struct Theme {
+struct Theme: Identifiable {
+    var id: String { name }
     var name: String
     var emojis: [String]
     var color: Color

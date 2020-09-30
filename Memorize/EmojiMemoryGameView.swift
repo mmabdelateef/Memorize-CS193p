@@ -27,7 +27,7 @@ struct EmojiMemoryGameView: View {
             Grid(viewModel.cards) { card in
                 CardView(card: card)
                     .onTapGesture {
-                    withAnimation(.linear(duration:2)) {
+                        withAnimation(.linear(duration:0.4)) {
                         self.viewModel.choose(card: card)
                     }
                 }
@@ -62,7 +62,7 @@ struct CardView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let vm = EmojiMemoryGame()
+        let vm = EmojiMemoryGame(themes: ThemeStore.themes)
         vm.choose(card: vm.cards.first!)
         return Group {
             EmojiMemoryGameView(viewModel: vm)
