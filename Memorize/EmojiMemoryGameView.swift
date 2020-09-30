@@ -21,9 +21,6 @@ struct EmojiMemoryGameView: View {
                     }
                 }
             }.padding()
-            Text(viewModel.selectedTheme.name)
-                .font(Font.largeTitle)
-                .transition(.identity)
             Grid(viewModel.cards) { card in
                 CardView(card: card)
                     .onTapGesture {
@@ -33,7 +30,7 @@ struct EmojiMemoryGameView: View {
                 }
             }
             .foregroundColor(viewModel.selectedTheme.color)
-        }
+        }.navigationBarTitle(Text(viewModel.selectedTheme.name))
     }
 }
 
@@ -62,7 +59,7 @@ struct CardView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let vm = EmojiMemoryGame(themes: ThemeStore.themes)
+        let vm = EmojiMemoryGame(theme: ThemeStore().random(), themeStore: ThemeStore())
         vm.choose(card: vm.cards.first!)
         return Group {
             EmojiMemoryGameView(viewModel: vm)

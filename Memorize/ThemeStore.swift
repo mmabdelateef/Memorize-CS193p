@@ -8,11 +8,21 @@
 
 import SwiftUI
 
-class ThemeStore {
-    static let themes: [Theme] = [
+class ThemeStore: ObservableObject {
+
+    @Published
+    private(set) var themes: [Theme] = [
     Theme(name: "Smilies", emojis: ["🧐", "🤪", "🤨", "😳", "😬", "🤗", "🥱"], color: Color.yellow),
     Theme(name: "Sea", emojis: ["🐙", "🐳", "🦑", "🦐", "🦈", "🦀", "🐠", "🐡"], color: Color.blue),
     Theme(name: "Animals", emojis: ["🦒", "🦏", "🐫", "🦓", "🐆", "🐅", "🐘", "🦍", "🐃"], color: Color.black),
-    Theme(name: "Plants", emojis: ["🌲", "🌾", "🌴", "🌳", "🍀", "🌵", "🎋", "🌿"], color: Color.green),
+//    Theme(name: "Plants", emojis: ["🌲", "🌾", "🌴", "🌳", "🍀", "🌵", "🎋", "🌿"], color: Color.green),
     ]
+
+    func random() -> Theme {
+        themes.randomElement()!
+    }
+
+    func add(theme: Theme) {
+        themes.append(theme)
+    }
 }

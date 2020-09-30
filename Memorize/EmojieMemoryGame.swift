@@ -23,10 +23,15 @@ class EmojiMemoryGame: ObservableObject {
         return Array(emojis[0..<count])
     }
 
-    private let themes: [Theme]
+    deinit {
+        print("Dalloc")
+    }
 
-    init(themes: [Theme]) {
-        self.themes = themes
+    let themeStore: ThemeStore
+
+    init(theme: Theme, themeStore: ThemeStore) {
+        self.selectedTheme = theme
+        self.themeStore = themeStore
         newGame()
     }
 
@@ -43,14 +48,12 @@ class EmojiMemoryGame: ObservableObject {
     }
 
     func newGame() {
-        let randomTheme = themes.randomElement()!
-        selectedTheme = randomTheme
-        model = MemoryGame<String>(pairs: EmojiMemoryGame.createRandomPairs(from: randomTheme.emojis))
+        model = MemoryGame<String>(pairs: EmojiMemoryGame.createRandomPairs(from: selectedTheme.emojis))
     }
 }
 
 struct Theme: Identifiable {
-    var id: String { name }
+    var id = UUID()
     var name: String
     var emojis: [String]
     var color: Color
