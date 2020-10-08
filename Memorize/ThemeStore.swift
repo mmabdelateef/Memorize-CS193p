@@ -25,4 +25,10 @@ class ThemeStore: ObservableObject {
     func add(theme: Theme) {
         themes.append(theme)
     }
+
+    func delete(theme: Theme) {
+        themes.removeAll { (theme2) -> Bool in
+            theme.id == theme2.id
+        }
+    }
 }
