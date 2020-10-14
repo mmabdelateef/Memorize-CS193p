@@ -48,7 +48,7 @@ class EmojiMemoryGame: ObservableObject {
     }
 
     func newGame() {
-        model = MemoryGame<String>(pairs: EmojiMemoryGame.createRandomPairs(from: selectedTheme.emojis))
+        model = MemoryGame<String>(pairs: EmojiMemoryGame.createRandomPairs(min: selectedTheme.emojis.count, max: selectedTheme.emojis.count, from: selectedTheme.emojis))
     }
 }
 
