@@ -56,45 +56,23 @@ struct ThemeChooser: View {
             .sheet(item: $presentation, content: { item in
                 switch item {
                 case .add:
-                    Form {
-                        Text("Add a Theme")
-                        Section {
-
-                            TextField("", text: $themeTitle)
-                            TextField("emojis", text: $themeEmojis).keyboardType(.alphabet)
-                            if #available(iOS 14.0, *) {
-                                ColorPicker("color", selection: $color)
-                            }
-
-                        }
-
-                        Button("Add") {
-                            themeStore.add(theme: Theme(name: themeTitle, emojis: themeEmojis.map(String.init), color: color))
-                            presentation = nil
-                        }
-
-
-                    }
+                    AddThemeView()
                 case let .edit(theme):
-                    Form {
-                        Text("Edit a Theme")
-                        Section {
-
-                            TextField("", text: $themeTitle)
-                            TextField("emojis", text: $themeEmojis).keyboardType(.alphabet)
-                            if #available(iOS 14.0, *) {
-                                ColorPicker("color", selection: $color)
-                            }
-
+                    EditThemeView(theme: theme, isPresented: Binding(
+                                    get: {
+                                        if case .edit = self.presentation {
+                                            return true
+                                        } else {
+                                            return false
+                                        }
+                                    },
+                                    set: { (newVal) in
+                        if newVal {
+                            self.presentation = .edit(theme)
+                        } else {
+                            self.presentation = nil
                         }
-
-                        Button("Done") {
-                            themeStore.add(theme: Theme(name: themeTitle, emojis: themeEmojis.map(String.init), color: color))
-                            presentation = nil
-                        }
-
-
-                    }
+                    }), viewModel: self.themeStore)
                 }
             })
             .navigationBarItems(leading: EditButton(), trailing:

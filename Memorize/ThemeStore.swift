@@ -31,4 +31,26 @@ class ThemeStore: ObservableObject {
             theme.id == theme2.id
         }
     }
+
+    static var someEmojis: [String] {
+        return (0x1F601...0x1F64F).map { i in
+            String(UnicodeScalar(i) ?? "-")
+        }
+    }
+
+    func add(_ emoji: String, to theme: Theme) {
+        guard let index = self.themes.firstIndex(where: { $0.id == theme.id}) else { return }
+        guard !themes[index].emojis.contains(emoji) else { return }
+        themes[index].emojis.append(emoji)
+    }
+
+    func remove(_ emoji: String, from theme: Theme) {
+        guard let index = self.themes.firstIndex(where: { $0.id == theme.id}) else { return }
+        themes[index].emojis.removeAll(where: { $0 == emoji })
+    }
+
+    func replaceThemeWith(_ theme: Theme) {
+        guard let index = self.themes.firstIndex(where: { $0.id == theme.id}) else { return }
+        themes[index] = theme
+    }
 }
